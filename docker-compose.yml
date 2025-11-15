@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  kyc-app:
+    build: .
+    container_name: java-kyc-app
+    ports:
+      - "9005:9005"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://kyc-db:5432/kyc_db
+    depends_on:
+      - kyc-db
+
+  kyc-db:
+    image: postgres:15
+    container_name: java-kyc-postgres
+    ports:
+      - "15405:5432"
+    environment:
+      POSTGRES_DB: kyc_db
+      POSTGRES_USER: kyc_user
+      POSTGRES_PASSWORD: kyc_pass
+    volumes:
+      - kyc_pg_data:/var/lib/postgresql/data
+
+volumes:
+  kyc_pg_data:
